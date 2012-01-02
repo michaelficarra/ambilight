@@ -91,7 +91,7 @@ There's a few configurable values in `ambilight.ino`.
 0. `serialRate`: `rate` value from `[device]` section of `/etc/boblight.conf`
 0. `prefix`: `prefix` value from `[device]` section of `/etc/boblight.conf`
 
-`/etc/boblight.conf` has to be configured with the regions (bloblight calls
+`/etc/boblight.conf` has to be configured with the regions (boblight calls
 them "lights") that are sampled for each individual LED. Below is a diagram of
 my configuration.
 
