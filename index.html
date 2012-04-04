@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>ambilight by michaelficarra</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>ambilight</h1>
+        <p>ambilight clone for your arduino and some WS2801s using boblight</p>
+        <p class="view"><a href="https://github.com/michaelficarra/ambilight">View the Project on GitHub <small>michaelficarra/ambilight</small></a></p>
+        <ul>
+          <li><a href="https://github.com/michaelficarra/ambilight/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/michaelficarra/ambilight/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/michaelficarra/ambilight">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>This is a small project for creating an ambilight clone using an Arduino, a
+string of LEDs and WS2801s, and boblight. Installation instructions are
+provided for the Arduino Uno and Fedora 16, though they won't likely differ
+much for any Arduino/Unix-like combination.</p>
+
+<h2>Parts List</h2>
+
+<ul>
+<li>Arduino Uno</li>
+<li><a href="http://www.adafruit.com/products/322">12mm Diffused Digital RGB LED Pixels (Strand of 25) - WS2801</a></li>
+<li>4 jumpers</li>
+</ul><h2>Installation</h2>
+
+<p>Make sure you have a <code>libraries</code> directory in the directory configured as your
+sketchbook in your arduino preferences.</p>
+
+<div class="highlight">
+<pre><span class="nv">SKETCHBOOK_PATH</span><span class="o">=</span><span class="k">$(</span>grep ^sketchbook.path ~/.arduino/preferences.txt | cut -d <span class="o">=</span> -f 2<span class="k">)</span>
+mkdir -p <span class="s2">"$SKETCHBOOK_PATH/libraries"</span>
+</pre>
+</div>
+
+
+<p>Make sure you have the SPI library installed.</p>
+
+<div class="highlight">
+<pre><span class="nb">cd</span> /tmp
+git clone git://github.com/arduino/Arduino.git arduino
+mv arduino/libraries/SPI <span class="s2">"$SKETCHBOOK_PATH/libraries"</span>
+rm -rf arduino
+</pre>
+</div>
+
+
+<p>Get the WS2801 library.</p>
+
+<div class="highlight">
+<pre><span class="nb">cd</span> <span class="s2">"$SKETCHBOOK_PATH/libraries"</span>
+git clone git://github.com/adafruit/WS2801-Library.git WS2801
+</pre>
+</div>
+
+
+<p>Clone this project.</p>
+
+<div class="highlight">
+<pre><span class="nb">cd</span> <span class="s2">"$SKETCHBOOK_PATH"</span>
+git clone git://github.com/michaelficarra/ambilight.git ambilight
+</pre>
+</div>
+
+
+<p>Boblight requires libavcodec. The Fedora build of ffmpeg didn't seem to come
+with libavcodec, so we'll have to get it ourselves.</p>
+
+<div class="highlight">
+<pre><span class="nb">cd</span> /tmp
+wget <a href="http://libav.org/releases/libav-0.7.3.tar.gz">http://libav.org/releases/libav-0.7.3.tar.gz</a> -O - | tar xz
+<span class="nb">cd </span>libav-0.7.3
+./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> sudo make install
+</pre>
+</div>
+
+
+<p>Download and install boblight.</p>
+
+<div class="highlight">
+<pre><span class="nb">cd</span> /tmp
+svn checkout <a href="http://boblight.googlecode.com/svn/trunk/">http://boblight.googlecode.com/svn/trunk/</a> boblight
+<span class="nb">cd </span>boblight
+./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> sudo make install
+</pre>
+</div>
+
+
+<p>Install the boblight configuration file.</p>
+
+<div class="highlight">
+<pre>sudo cp <span class="s2">"$SKETCHBOOK_PATH/ambilight/boblight.conf"</span> /etc/
+</pre>
+</div>
+
+
+<p>In the ardruino software, <code>File -&gt; sketchbook -&gt; ambilight</code>. Configure the
+<code>dataPin</code>, <code>clockPin</code>, <code>stripLength</code>, <code>serialRate</code>, and <code>prefix</code> values.
+<code>Ctrl-u</code> to compile and upload to your Arduino. Unplug your Arduino and attach
+the LED strip to your Arduino as in the following pictures.</p>
+
+<p><img src="http://i.imgur.com/gBIbp.jpg" alt="connection to Arduino"></p>
+
+<p><img src="http://i.imgur.com/stw2o.jpg" alt="connection to WS2801"></p>
+
+<p><img src="http://i.imgur.com/HDW4i.jpg" alt="WS2801 pins: from top to bottom: data, clock, ground, +5V"></p>
+
+<h2>Configuration</h2>
+
+<p>There's a few configurable values in <code>ambilight.ino</code>.</p>
+
+<ol>
+<li>
+<code>dataPin</code>: the number of the Arduino pin connected to the WS2801 data pin</li>
+<li>
+<code>clockPin</code>: the number of the Arduino pin connected to the WS2801 clock pin</li>
+<li>
+<code>stripLength</code>: the number of WS2801-LED pairs, must be greater than zero</li>
+<li>
+<code>serialRate</code>: <code>rate</code> value from <code>[device]</code> section of <code>/etc/boblight.conf</code>
+</li>
+<li>
+<code>prefix</code>: <code>prefix</code> value from <code>[device]</code> section of <code>/etc/boblight.conf</code>
+</li>
+</ol><p><code>/etc/boblight.conf</code> has to be configured with the regions (boblight calls
+them "lights") that are sampled for each individual LED. Below is a diagram of
+my configuration.</p>
+
+<p><img src="http://i.imgur.com/g9RV9.png" alt="boblight.conf setup, with image of light positions"></p>
+
+<h2>Running</h2>
+
+<p>Connect the arduino to USB. The first LED should be red, indicating it is
+waiting for a client.</p>
+
+<p>Start the boblight daemon with <code>boblightd</code>. To detach it, instead run <code>nohup
+boblightd &amp;&gt;/dev/null &amp;</code>. <code>boblight-x11</code> connects to the <code>boblightd</code> daemon and
+sends the screen image data. I pass in some options with <code>-o</code>.</p>
+
+<pre><code>boblight-X11 -s 127.0.0.1:19333 -o saturation=1.7 -o value=0.5 -o threshold=60
+</code></pre>
+
+<p>Again, <code>nohup</code> may be used to detach it.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/michaelficarra">michaelficarra</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
