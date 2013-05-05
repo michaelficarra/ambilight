@@ -1,5 +1,5 @@
 #include "SPI.h"
-#include "WS2801.h"
+#include "Adafruit_WS2801.h"
 
 #define dataPin 2
 #define clockPin 3
@@ -13,7 +13,7 @@
 // boblightd sends a prefix (defined in /etc/boblight.conf) before sending the pixel data
 uint8_t prefix[] = {0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA};
 
-WS2801 strip = WS2801(stripLength, dataPin, clockPin);
+Adafruit_WS2801 strip = Adafruit_WS2801(stripLength, dataPin, clockPin);
 
 void setup() {
   // initialise our LED strip
