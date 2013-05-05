@@ -99,4 +99,7 @@ sends the screen image data. I pass in some options with `-o`.
 
     boblight-X11 -s 127.0.0.1:19333 -o saturation=1.7 -o value=0.5 -o threshold=60
 
-Again, `nohup` may be used to detach it.
+Again, `nohup` may be used to detach it. If `boblight-X11` fails to start with
+the error `libboblight.so: cannot open shared object file`, notice that
+`/usr/local/lib` must be in the `LD_LIBRARY_PATH` environment variable. Prefix
+the `boblight-X11` invocation with `LD_LIBRARY_PATH="$LD_LIBRARY_PATH":/usr/local/lib`.
