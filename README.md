@@ -44,16 +44,6 @@ cd "$SKETCHBOOK_PATH"
 git clone git://github.com/michaelficarra/ambilight.git ambilight
 ```
 
-Boblight requires libavcodec. The Fedora build of ffmpeg didn't seem to come
-with libavcodec, so we'll have to get it ourselves.
-
-```bash
-cd /tmp
-wget http://libav.org/releases/libav-0.7.3.tar.gz -O - | tar xz
-cd libav-0.7.3
-./configure && make && sudo make install
-```
-
 Download and install boblight.
 
 ```bash
