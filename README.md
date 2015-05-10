@@ -25,7 +25,7 @@ Make sure you have the SPI library installed.
 
 ```bash
 cd /tmp
-git clone git://github.com/arduino/Arduino.git arduino
+git clone --depth 1 git://github.com/arduino/Arduino.git arduino
 mv arduino/libraries/SPI "$SKETCHBOOK_PATH/libraries"
 rm -rf arduino
 ```
@@ -34,14 +34,14 @@ Get the WS2801 library.
 
 ```bash
 cd "$SKETCHBOOK_PATH/libraries"
-git clone git://github.com/adafruit/Adafruit-WS2801-Library.git WS2801
+git clone --depth 1 git://github.com/adafruit/Adafruit-WS2801-Library.git WS2801
 ```
 
 Clone this project.
 
 ```bash
 cd "$SKETCHBOOK_PATH"
-git clone git://github.com/michaelficarra/ambilight.git ambilight
+git clone --depth 1 git://github.com/michaelficarra/ambilight.git ambilight
 ```
 
 Download and install boblight.
